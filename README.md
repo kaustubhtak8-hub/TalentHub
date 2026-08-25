@@ -1,6 +1,13 @@
 # TalentHub - Audition & Talent Matching Platform
 
-TalentHub is a web platform that connects rising artists (actors, singers, dancers, etc.) with casting directors, organizers, and audition opportunities. 
+> [!WARNING]
+> **Deployment Credentials & Quick Reference**
+> *   **Supabase Project URL:** https://jtvktifhnuwgrkclrknq.supabase.co
+> *   **Supabase Database Host:** `db.jtvktifhnuwgrkclrknq.supabase.co` (port `5432` / pooler `aws-0-ap-northeast-1.pooler.supabase.com`)
+> *   **Database Username:** `postgres` (pooler username: `postgres.jtvktifhnuwgrkclrknq`)
+> *   **Database Password:** `Talent@42311#`
+> *   **Deployed Backend API URL:** https://talenthub-aan4.onrender.com/api/v1
+> *   **Deployed Frontend UI URL (Vercel):** *[Deploy to Vercel and paste your URL here!]*
 
 ---
 
