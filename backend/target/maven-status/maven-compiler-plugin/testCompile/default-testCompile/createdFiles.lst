@@ -1,0 +1,7 @@
+com\talenthub\service\AuditionApplicationServiceTest.class
+com\talenthub\controller\AuthControllerTest.class
+com\talenthub\controller\AuditionApplicationControllerTest.class
+com\talenthub\controller\AuditionControllerTest.class
+com\talenthub\security\JwtTokenProviderTest.class
+com\talenthub\service\ProfileServiceTest.class
+com\talenthub\service\AuditionServiceTest.class

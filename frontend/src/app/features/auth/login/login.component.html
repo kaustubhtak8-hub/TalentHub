@@ -1,0 +1,65 @@
+<div class="auth-container">
+  <div class="glass-card">
+    <div class="auth-header">
+      <div class="logo">Talent<span>Hub</span></div>
+      <h2>Welcome Back</h2>
+      <p class="subtitle">Connect with your next big opportunity</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div *ngIf="error" class="alert alert-danger">
+        <span class="alert-icon">⚠️</span>
+        <span class="alert-text">{{ error }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <span class="input-icon">✉️</span>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            placeholder="name@domain.com"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Enter a valid email address</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-row">
+          <label for="password">Password</label>
+          <a routerLink="/auth/forgot" class="forgot-link">Forgot?</a>
+        </div>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            placeholder="••••••••"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">Password is required</div>
+          <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="loading" class="btn-primary">
+        <span *ngIf="!loading">Sign In</span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+
+      <p class="auth-footer">
+        Don't have an account? 
+        <a routerLink="/auth/register">Create one free</a>
+      </p>
+    </form>
+  </div>
+</div>

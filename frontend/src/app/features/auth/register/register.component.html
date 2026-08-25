@@ -1,0 +1,104 @@
+<div class="auth-container">
+  <div class="glass-card">
+    <div class="auth-header">
+      <div class="logo">Talent<span>Hub</span></div>
+      <h2>Create Your Account</h2>
+      <p class="subtitle">Join as an Artist or an Organizer</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div *ngIf="error" class="alert alert-danger">
+        <span class="alert-icon">⚠️</span>
+        <span class="alert-text">{{ error }}</span>
+      </div>
+
+      <div *ngIf="success" class="alert alert-success">
+        <span class="alert-icon">✅</span>
+        <span class="alert-text">{{ success }}</span>
+      </div>
+
+      <!-- Role Selector Cards -->
+      <div class="form-group">
+        <label>Account Type</label>
+        <div class="role-selector-group">
+          <label class="role-card" [ngClass]="{ 'active': f['role'].value === 'ARTIST' }">
+            <input type="radio" formControlName="role" value="ARTIST" class="hidden-radio" />
+            <span class="role-icon">🎨</span>
+            <span class="role-title">Artist</span>
+            <span class="role-desc">Browse & apply to auditions</span>
+          </label>
+          <label class="role-card" [ngClass]="{ 'active': f['role'].value === 'ORGANIZER' }">
+            <input type="radio" formControlName="role" value="ORGANIZER" class="hidden-radio" />
+            <span class="role-icon">💼</span>
+            <span class="role-title">Organizer</span>
+            <span class="role-desc">Post auditions & hire talent</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <span class="input-icon">✉️</span>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            placeholder="name@domain.com"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Enter a valid email address</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            placeholder="••••••••"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">Password is required</div>
+          <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            formControlName="confirmPassword" 
+            placeholder="••••••••"
+            [ngClass]="{ 'is-invalid': submitted && (f['confirmPassword'].errors || registerForm.errors?.['mismatch']) }"
+          />
+        </div>
+        <div *ngIf="submitted && (f['confirmPassword'].errors || registerForm.errors?.['mismatch'])" class="invalid-feedback">
+          <div *ngIf="f['confirmPassword'].errors?.['required']">Confirm password is required</div>
+          <div *ngIf="registerForm.errors?.['mismatch']">Passwords must match</div>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="loading" class="btn-primary">
+        <span *ngIf="!loading">Sign Up</span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+
+      <p class="auth-footer">
+        Already have an account? 
+        <a routerLink="/auth/login">Sign in instead</a>
+      </p>
+    </form>
+  </div>
+</div>

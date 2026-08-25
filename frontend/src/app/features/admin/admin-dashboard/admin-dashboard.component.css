@@ -1,0 +1,47 @@
+.admin-container {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 40px;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.admin-icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+}
+
+.page-subtitle {
+  color: #94A3B8;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 32px 0;
+}
+
+.btn-home {
+  background: #6366F1;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-block;
+  transition: background-color 0.2s;
+}
+
+.btn-home:hover {
+  background: #4F46E5;
+}

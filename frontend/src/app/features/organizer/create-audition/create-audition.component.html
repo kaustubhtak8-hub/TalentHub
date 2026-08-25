@@ -1,0 +1,145 @@
+<div class="form-container">
+  <div class="form-header">
+    <h1 class="page-title">{{ isEditMode ? 'Edit Audition' : 'Create an Audition' }}</h1>
+    <p class="page-subtitle">
+      {{ isEditMode ? 'Modify details of your existing casting call.' : 'Post a new casting call opportunity to connect with artists.' }}
+    </p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="state-container">
+    <div class="page-spinner"></div>
+    <p>Loading details...</p>
+  </div>
+
+  <!-- Form Card -->
+  <div *ngIf="!loading" class="form-card">
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    <div *ngIf="auditionForm.errors?.['dateOrderInvalid']" class="alert alert-danger">
+      Audition Date must be on or after the Application Deadline.
+    </div>
+
+    <form [formGroup]="auditionForm" (ngSubmit)="onSubmit()" class="audition-form">
+      <div class="form-grid">
+        <!-- Title -->
+        <div class="form-group full-width">
+          <label for="title">Audition Title*</label>
+          <input 
+            type="text" 
+            id="title" 
+            formControlName="title" 
+            placeholder="e.g. Lead Actor for Indie Short Film"
+            class="form-input"
+            [ngClass]="{ 'is-invalid': f['title'].touched && f['title'].errors }"
+          />
+          <div *ngIf="f['title'].touched && f['title'].errors?.['required']" class="invalid-feedback">
+            Audition title is required.
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+          <label for="category">Category*</label>
+          <div class="select-wrapper">
+            <select id="category" formControlName="category" class="form-select">
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+          <label for="location">Location*</label>
+          <input 
+            type="text" 
+            id="location" 
+            formControlName="location" 
+            placeholder="e.g. Los Angeles, CA or Remote"
+            class="form-input"
+            [ngClass]="{ 'is-invalid': f['location'].touched && f['location'].errors }"
+          />
+          <div *ngIf="f['location'].touched && f['location'].errors?.['required']" class="invalid-feedback">
+            Location is required.
+          </div>
+        </div>
+
+        <!-- Application Deadline -->
+        <div class="form-group">
+          <label for="applicationDeadline">Application Deadline*</label>
+          <input 
+            type="date" 
+            id="applicationDeadline" 
+            formControlName="applicationDeadline" 
+            class="form-input"
+            [ngClass]="{ 'is-invalid': f['applicationDeadline'].touched && f['applicationDeadline'].errors }"
+          />
+          <div *ngIf="f['applicationDeadline'].touched && f['applicationDeadline'].errors?.['required']" class="invalid-feedback">
+            Application deadline is required.
+          </div>
+          <div *ngIf="f['applicationDeadline'].errors?.['pastDeadline']" class="invalid-feedback">
+            Deadline cannot be in the past.
+          </div>
+        </div>
+
+        <!-- Audition Date -->
+        <div class="form-group">
+          <label for="auditionDate">Audition Date</label>
+          <input 
+            type="date" 
+            id="auditionDate" 
+            formControlName="auditionDate" 
+            class="form-input"
+          />
+        </div>
+
+        <!-- Status (Only visible when editing) -->
+        <div *ngIf="isEditMode" class="form-group full-width">
+          <label for="status">Status</label>
+          <div class="select-wrapper">
+            <select id="status" formControlName="status" class="form-select">
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="CLOSED">CLOSED</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group full-width">
+          <label for="description">Role Description*</label>
+          <textarea 
+            id="description" 
+            formControlName="description" 
+            placeholder="Provide a detailed description of the role, the project, and casting schedules..."
+            rows="5"
+            class="form-textarea"
+            [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors }"
+          ></textarea>
+          <div *ngIf="f['description'].touched && f['description'].errors?.['required']" class="invalid-feedback">
+            Description is required.
+          </div>
+        </div>
+
+        <!-- Requirements -->
+        <div class="form-group full-width">
+          <label for="requirements">Candidate Requirements</label>
+          <textarea 
+            id="requirements" 
+            formControlName="requirements" 
+            placeholder="List specific skill requirements, age groups, physical attributes, experience levels, prep materials..."
+            rows="4"
+            class="form-textarea"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <a routerLink="/organizer/dashboard" class="btn-cancel">Cancel</a>
+        <button type="submit" [disabled]="submitting || auditionForm.invalid" class="btn-submit">
+          <span *ngIf="!submitting">{{ isEditMode ? 'Save Changes' : 'Publish Audition' }}</span>
+          <span *ngIf="submitting" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

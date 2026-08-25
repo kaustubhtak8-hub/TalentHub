@@ -1,0 +1,76 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <a routerLink="/home">Talent<span>Hub</span></a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <ul class="nav-links">
+      <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+      <li><a routerLink="/auditions" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Find Auditions</a></li>
+
+      <!-- Artist Navigation -->
+      <ng-container *ngIf="currentUser?.role === 'ARTIST'">
+        <li><a routerLink="/artist/applications" routerLinkActive="active">My Applications</a></li>
+        <li><a routerLink="/artist/profile" routerLinkActive="active">My Profile</a></li>
+      </ng-container>
+
+      <!-- Organizer Navigation -->
+      <ng-container *ngIf="currentUser?.role === 'ORGANIZER'">
+        <li><a routerLink="/organizer/dashboard" routerLinkActive="active">My Auditions</a></li>
+        <li><a routerLink="/organizer/auditions/create" routerLinkActive="active">Create Audition</a></li>
+        <li><a routerLink="/organizer/profile" routerLinkActive="active">Org Profile</a></li>
+      </ng-container>
+    </ul>
+
+    <!-- Desktop Auth Actions -->
+    <div class="nav-actions">
+      <ng-container *ngIf="!currentUser">
+        <a routerLink="/auth/login" class="btn-link">Login</a>
+        <a routerLink="/auth/register" class="btn-nav-primary">Register</a>
+      </ng-container>
+      <ng-container *ngIf="currentUser">
+        <span class="user-badge" [title]="currentUser.role">{{ currentUser.email }} ({{ currentUser.role }})</span>
+        <button (click)="logout()" class="btn-logout">Logout</button>
+      </ng-container>
+    </div>
+
+    <!-- Mobile Hamburger Toggle -->
+    <button class="mobile-toggle" (click)="toggleMobileMenu()" aria-label="Toggle Navigation">
+      <span class="bar" [ngClass]="{'open': mobileMenuOpen}"></span>
+      <span class="bar" [ngClass]="{'open': mobileMenuOpen}"></span>
+      <span class="bar" [ngClass]="{'open': mobileMenuOpen}"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" [ngClass]="{'open': mobileMenuOpen}">
+    <ul class="mobile-links">
+      <li><a routerLink="/home" (click)="toggleMobileMenu()">Home</a></li>
+      <li><a routerLink="/auditions" (click)="toggleMobileMenu()">Find Auditions</a></li>
+
+      <!-- Artist Mobile -->
+      <ng-container *ngIf="currentUser?.role === 'ARTIST'">
+        <li><a routerLink="/artist/applications" (click)="toggleMobileMenu()">My Applications</a></li>
+        <li><a routerLink="/artist/profile" (click)="toggleMobileMenu()">My Profile</a></li>
+      </ng-container>
+
+      <!-- Organizer Mobile -->
+      <ng-container *ngIf="currentUser?.role === 'ORGANIZER'">
+        <li><a routerLink="/organizer/dashboard" (click)="toggleMobileMenu()">My Auditions</a></li>
+        <li><a routerLink="/organizer/auditions/create" (click)="toggleMobileMenu()">Create Audition</a></li>
+        <li><a routerLink="/organizer/profile" (click)="toggleMobileMenu()">Org Profile</a></li>
+      </ng-container>
+
+      <li class="mobile-action-item">
+        <ng-container *ngIf="!currentUser">
+          <a routerLink="/auth/login" class="btn-mobile-login" (click)="toggleMobileMenu()">Login</a>
+          <a routerLink="/auth/register" class="btn-mobile-register" (click)="toggleMobileMenu()">Register</a>
+        </ng-container>
+        <ng-container *ngIf="currentUser">
+          <button (click)="logout(); toggleMobileMenu()" class="btn-mobile-logout">Logout</button>
+        </ng-container>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,89 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1 class="page-title">Organization Profile</h1>
+    <p class="page-subtitle">Manage details of your agency, theater, production company, or casting studio.</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="state-container">
+    <div class="page-spinner"></div>
+    <p>Loading organization profile...</p>
+  </div>
+
+  <!-- Profile Form Card -->
+  <div *ngIf="!loading" class="profile-card">
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+      <!-- Organization Name -->
+      <div class="form-group">
+        <label for="organizationName">Organization / Studio Name*</label>
+        <input 
+          type="text" 
+          id="organizationName" 
+          formControlName="organizationName" 
+          placeholder="e.g. Star Casting Agency"
+          class="form-input"
+          [ngClass]="{ 'is-invalid': f['organizationName'].touched && f['organizationName'].errors }"
+        />
+        <div *ngIf="f['organizationName'].touched && f['organizationName'].errors?.['required']" class="invalid-feedback">
+          Organization name is required.
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!-- Location -->
+        <div class="form-group">
+          <label for="location">Location (City, Country)*</label>
+          <input 
+            type="text" 
+            id="location" 
+            formControlName="location" 
+            placeholder="e.g. Chicago, IL"
+            class="form-input"
+            [ngClass]="{ 'is-invalid': f['location'].touched && f['location'].errors }"
+          />
+          <div *ngIf="f['location'].touched && f['location'].errors?.['required']" class="invalid-feedback">
+            Location is required.
+          </div>
+        </div>
+
+        <!-- Website -->
+        <div class="form-group">
+          <label for="website">Website URL</label>
+          <input 
+            type="text" 
+            id="website" 
+            formControlName="website" 
+            placeholder="e.g. https://www.starcasting.com"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Agency Description / About Us*</label>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          placeholder="Tell artists about your production house, casting agency, types of projects, previous stagings, etc..."
+          rows="6"
+          class="form-textarea"
+          [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors }"
+        ></textarea>
+        <div *ngIf="f['description'].touched && f['description'].errors?.['required']" class="invalid-feedback">
+          Description is required.
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" [disabled]="saving || profileForm.invalid" class="btn-save">
+          <span *ngIf="!saving">Save Profile</span>
+          <span *ngIf="saving" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

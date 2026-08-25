@@ -1,0 +1,72 @@
+<div class="home-wrapper">
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Discover Your Next Opportunity</h1>
+      <p class="hero-subtitle">
+        TalentHub connects rising artists with local talent opportunities, auditions, and professional casting organizers.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/auditions" class="btn-hero-primary">Find Auditions</a>
+        <button (click)="postAuditionClick()" class="btn-hero-secondary">Post an Audition</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="home-container">
+    <!-- Categories Section -->
+    <section class="section">
+      <h2 class="section-title">Browse by Category</h2>
+      <div class="categories-grid">
+        <button 
+          *ngFor="let cat of categories" 
+          (click)="filterByCategory(cat.name)" 
+          class="category-card"
+        >
+          <span class="cat-icon">{{ cat.icon }}</span>
+          <span class="cat-name">{{ cat.name }}</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Latest Auditions Section -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Latest Auditions</h2>
+        <a routerLink="/auditions" class="view-all-link">View All Auditions →</a>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="state-container">
+        <div class="page-spinner"></div>
+        <p>Loading latest postings...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading && latestAuditions.length === 0" class="state-container empty-state">
+        <span class="empty-icon">📢</span>
+        <h3>No active auditions found</h3>
+        <p>Check back later or post your own talent opportunity today.</p>
+      </div>
+
+      <!-- Auditions Grid -->
+      <div *ngIf="!loading && latestAuditions.length > 0" class="auditions-grid">
+        <div *ngFor="let aud of latestAuditions" class="audition-card">
+          <div class="card-badge">{{ aud.category }}</div>
+          <h3 class="card-title">{{ aud.title }}</h3>
+          <p class="card-org">Organized by: {{ aud.organizationName || 'Star Production' }}</p>
+          <p class="card-desc">{{ aud.description | slice:0:120 }}...</p>
+          
+          <div class="card-meta">
+            <span class="meta-item">📍 {{ aud.location }}</span>
+            <span class="meta-item">📅 {{ aud.auditionDate ? aud.auditionDate : 'TBD' }}</span>
+          </div>
+
+          <div class="card-footer">
+            <a [routerLink]="['/auditions', aud.id]" class="btn-card-link">View Details</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

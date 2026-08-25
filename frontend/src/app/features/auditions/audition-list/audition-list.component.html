@@ -1,0 +1,73 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Explore Talent Opportunities</h1>
+    <p class="page-subtitle">Find and apply to active auditions matching your skills.</p>
+  </div>
+
+  <!-- Search and Filters Panel -->
+  <div class="filters-panel">
+    <div class="search-input-group">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        [(ngModel)]="searchText" 
+        (input)="applyFilters()" 
+        placeholder="Search auditions by title or keyword..."
+        class="search-field"
+      />
+    </div>
+
+    <div class="filter-controls">
+      <div class="select-wrapper">
+        <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="filter-select">
+          <option value="">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="select-wrapper">
+        <select [(ngModel)]="selectedLocation" (change)="applyFilters()" class="filter-select">
+          <option value="">All Locations</option>
+          <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+        </select>
+      </div>
+
+      <button (click)="resetFilters()" class="btn-clear-filters">Reset</button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="state-container">
+    <div class="page-spinner"></div>
+    <p>Loading auditions...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredAuditions.length === 0" class="state-container empty-state">
+    <span class="empty-icon">📂</span>
+    <h3>No auditions match your filters</h3>
+    <p>Try resetting the filters or modifying your search keywords.</p>
+    <button (click)="resetFilters()" class="btn-action">Clear Filters</button>
+  </div>
+
+  <!-- Auditions Grid -->
+  <div *ngIf="!loading && filteredAuditions.length > 0" class="auditions-grid">
+    <div *ngFor="let aud of filteredAuditions" class="audition-card">
+      <div class="card-badge">{{ aud.category }}</div>
+      <h3 class="card-title">{{ aud.title }}</h3>
+      <p class="card-org">Organized by: {{ aud.organizationName || 'Star Production' }}</p>
+      
+      <div class="card-meta-list">
+        <span class="meta-item">📍 {{ aud.location }}</span>
+        <span class="meta-item">📅 Audition: {{ aud.auditionDate ? aud.auditionDate : 'TBD' }}</span>
+        <span class="meta-item deadline">⏳ Deadline: {{ aud.applicationDeadline }}</span>
+      </div>
+
+      <p class="card-desc">{{ aud.description | slice:0:150 }}...</p>
+
+      <div class="card-footer">
+        <a [routerLink]="['/auditions', aud.id]" class="btn-card-link">View Details</a>
+      </div>
+    </div>
+  </div>
+</div>

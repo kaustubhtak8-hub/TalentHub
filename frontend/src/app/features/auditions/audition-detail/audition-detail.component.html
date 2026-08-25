@@ -1,0 +1,145 @@
+<div class="detail-wrapper">
+  <!-- Back navigation -->
+  <div class="back-nav">
+    <a routerLink="/auditions" class="btn-back">← Back to Auditions</a>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="state-container">
+    <div class="page-spinner"></div>
+    <p>Loading audition details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && !audition" class="state-container error-state">
+    <span class="error-icon">⚠️</span>
+    <h3>Audition not found</h3>
+    <p>{{ errorMessage || 'This audition post does not exist or has been removed.' }}</p>
+  </div>
+
+  <!-- Content Grid -->
+  <div *ngIf="!loading && audition" class="detail-grid">
+    <!-- Main Left Details -->
+    <div class="main-info">
+      <div class="info-header">
+        <span class="category-badge">{{ audition.category }}</span>
+        <span class="status-badge" [ngClass]="audition.status?.toLowerCase()">{{ audition.status }}</span>
+      </div>
+
+      <h1 class="audition-title">{{ audition.title }}</h1>
+      <p class="organization-name">Casting by: {{ audition.organizationName || 'Star Production' }}</p>
+
+      <div class="info-block">
+        <h3 class="block-title">Description</h3>
+        <p class="block-text">{{ audition.description }}</p>
+      </div>
+
+      <div *ngIf="audition.requirements" class="info-block">
+        <h3 class="block-title">Requirements</h3>
+        <p class="block-text">{{ audition.requirements }}</p>
+      </div>
+    </div>
+
+    <!-- Sidebar Right Details & Apply Form -->
+    <div class="sidebar">
+      <div class="panel parameters-panel">
+        <h3 class="panel-title">Audition Information</h3>
+        <ul class="parameter-list">
+          <li>
+            <span class="param-icon">📍</span>
+            <div class="param-content">
+              <span class="param-label">Location</span>
+              <span class="param-value">{{ audition.location }}</span>
+            </div>
+          </li>
+          <li>
+            <span class="param-icon">📅</span>
+            <div class="param-content">
+              <span class="param-label">Audition Date</span>
+              <span class="param-value">{{ audition.auditionDate ? audition.auditionDate : 'To be confirmed' }}</span>
+            </div>
+          </li>
+          <li>
+            <span class="param-icon">⏳</span>
+            <div class="param-content">
+              <span class="param-label">Application Deadline</span>
+              <span class="param-value deadline">{{ audition.applicationDeadline }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Apply Action Box -->
+      <div class="panel apply-panel">
+        <!-- Audition is CLOSED -->
+        <ng-container *ngIf="audition.status === 'CLOSED'; else activeSection">
+          <div class="closed-notice">
+            <span class="notice-icon">🔒</span>
+            <h3>Audition Closed</h3>
+            <p>The application deadline for this audition has passed, or the organizer has closed submissions.</p>
+          </div>
+        </ng-container>
+
+        <!-- Audition is ACTIVE -->
+        <ng-template #activeSection>
+          <!-- Logged out -->
+          <ng-container *ngIf="!isLoggedIn">
+            <div class="auth-notice">
+              <h3>Interested in this role?</h3>
+              <p>Sign in to submit your profile and cover note directly to the casting director.</p>
+              <a [routerLink]="['/auth/login']" [queryParams]="{ returnUrl: '/auditions/' + audition.id }" class="btn-primary-apply">Login to Apply</a>
+            </div>
+          </ng-container>
+
+          <!-- Logged in -->
+          <ng-container *ngIf="isLoggedIn">
+            <!-- Logged in as Organizer -->
+            <ng-container *ngIf="!isArtist">
+              <div class="role-notice">
+                <span class="notice-icon">💼</span>
+                <p>You are logged in as an Organizer. Only Artist accounts can submit audition applications.</p>
+              </div>
+            </ng-container>
+
+            <!-- Logged in as Artist -->
+            <ng-container *ngIf="isArtist">
+              <!-- Already Applied -->
+              <div *ngIf="hasApplied" class="applied-notice">
+                <span class="notice-icon">✅</span>
+                <h3>Applied</h3>
+                <p>Your application was successfully sent. You can check its current status in your applications dashboard.</p>
+                <a routerLink="/artist/applications" class="btn-dashboard-link">Go to My Applications</a>
+              </div>
+
+              <!-- Submit Form -->
+              <form *ngIf="!hasApplied" (ngSubmit)="submitApplication()" class="apply-form">
+                <h3>Submit Application</h3>
+                <p class="form-desc">Provide an optional cover letter or introduction message for the casting team.</p>
+
+                <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+                <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+                <div class="form-group">
+                  <label for="message">Cover Message (Optional)</label>
+                  <textarea 
+                    id="message" 
+                    [(ngModel)]="applicationMessage" 
+                    name="message" 
+                    placeholder="Describe why you are a good fit for this role, your availability, etc..."
+                    rows="5"
+                    class="form-textarea"
+                  ></textarea>
+                </div>
+
+                <button type="submit" [disabled]="submitting" class="btn-primary-apply">
+                  <span *ngIf="!submitting">Apply Now</span>
+                  <span *ngIf="submitting" class="spinner"></span>
+                </button>
+              </form>
+            </ng-container>
+          </ng-container>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

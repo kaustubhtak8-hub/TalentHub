@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres
+    username: postgres.jtvktifhnuwgrkclrknq
+    password: Talent@42311#
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:9a676786a7d51944d1e2e4b6b669fcf78c2e6cd90ad27e85c18e11a1a7c5cde78a1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8}
+    expiration-ms: 86400000 # 24 hours
