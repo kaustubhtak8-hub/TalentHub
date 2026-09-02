@@ -1,13 +1,13 @@
 # TalentHub - Audition & Talent Matching Platform
 
-> [!WARNING]
-> **Deployment Credentials & Quick Reference**
-> *   **Supabase Project URL:** https://jtvktifhnuwgrkclrknq.supabase.co
-> *   **Supabase Database Host:** `db.jtvktifhnuwgrkclrknq.supabase.co` (port `5432` / pooler `aws-0-ap-northeast-1.pooler.supabase.com`)
-> *   **Database Username:** `postgres` (pooler username: `postgres.jtvktifhnuwgrkclrknq`)
-> *   **Database Password:** `Talent@42311#`
-> *   **Deployed Backend API URL:** https://talenthub-aan4.onrender.com/api/v1
-> *   **Deployed Frontend UI URL (Vercel):** *[Deploy to Vercel and paste your URL here!]*
+> [!NOTE]
+> **Quick Access & URLs**
+> *   **Local Frontend UI:** http://localhost:4200
+> *   **Local Backend API:** http://localhost:8080/api/v1
+> *   **Deployed Backend API (Render):** https://talenthub-aan4.onrender.com/api/v1
+> *   **Supabase Project Dashboard:** https://jtvktifhnuwgrkclrknq.supabase.co
+> *   **Database Host:** `db.jtvktifhnuwgrkclrknq.supabase.co` (Port `5432` / Pooler `aws-0-ap-northeast-1.pooler.supabase.com`)
+> *   **Database User / Password:** `postgres` / `Talent@42311#`
 
 ---
 
